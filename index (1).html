@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberSafe AI - GPU-Accelerated Threat Intelligence Platform (NVIDIA TensorRT)</title>
+  <meta name="description" content="Real-time AI cybersecurity platform powered by NVIDIA CUDA & TensorRT for detecting phishing URLs, malware payloads, and network intrusions.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- App Main Container -->
+  <div class="app-container">
+
+    <!-- Top Sticky Header -->
+    <header class="top-header">
+      <div class="brand-section">
+        <div class="logo-badge">
+          <i data-lucide="shield-check" style="color: #fff; width: 24px; height: 24px;"></i>
+        </div>
+        <div>
+          <h1 class="brand-title">CYBERSAFE AI</h1>
+          <div class="tagline">NVIDIA CUDA / TENSORRT ACCELERATED THREAT ENGINE</div>
+        </div>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-pill">
+          <div class="status-dot"></div>
+          <span style="color: var(--text-muted);">STATUS:</span>
+          <strong style="color: var(--nvidia-green);">REAL-TIME DEFENSE ACTIVE</strong>
+        </div>
+
+        <div class="stat-pill">
+          <i data-lucide="cpu" style="color: var(--cyber-cyan); width: 16px; height: 16px;"></i>
+          <span style="color: var(--text-muted);">GPU MODE:</span>
+          <strong style="color: var(--cyber-cyan);" id="gpu-mode-indicator">RTX 4090 (FP16 TensorRT)</strong>
+        </div>
+
+        <button class="cyber-btn" onclick="downloadIncidentReport()" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
+          <i data-lucide="file-text" style="width: 16px; height: 16px;"></i> EXPORT AUDIT REPORT
+        </button>
+      </div>
+    </header>
+
+    <!-- Tab Navigation Bar -->
+    <nav class="nav-bar">
+      <button class="nav-btn active" data-tab="overview">
+        <i data-lucide="layout-dashboard"></i> Overview & Telemetry <span class="badge">LIVE</span>
+      </button>
+      <button class="nav-btn" data-tab="url">
+        <i data-lucide="globe"></i> Phishing & URL Scanner
+      </button>
+      <button class="nav-btn" data-tab="malware">
+        <i data-lucide="bug"></i> Malware Payload Inspector
+      </button>
+      <button class="nav-btn" data-tab="nids">
+        <i data-lucide="network"></i> Network Intrusion (NIDS)
+      </button>
+      <button class="nav-btn" data-tab="gpu">
+        <i data-lucide="zap"></i> GPU Benchmarks (TensorRT)
+      </button>
+      <button class="nav-btn" data-tab="xai">
+        <i data-lucide="brain-circuit"></i> Explainable AI (XAI)
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Top Metrics Row -->
+      <section class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-icon">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <div class="metric-info">
+            <div class="label">Total Threats Neutralized</div>
+            <div class="value" id="count-total">1,482</div>
+            <div class="subtext">+14 in last 60s</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon cyan">
+            <i data-lucide="link-2"></i>
+          </div>
+          <div class="metric-info">
+            <div class="label">Phishing URLs Blocked</div>
+            <div class="value" id="count-phishing">824</div>
+            <div class="subtext" style="color: var(--cyber-cyan);">Zero-Day Detection Rate: 99.4%</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon crimson">
+            <i data-lucide="binary"></i>
+          </div>
+          <div class="metric-info">
+            <div class="label">Malware Payloads Scanned</div>
+            <div class="value" id="count-malware">412</div>
+            <div class="subtext" style="color: var(--threat-crimson);">Ransomware & Win32 Trojans</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon amber">
+            <i data-lucide="activity"></i>
+          </div>
+          <div class="metric-info">
+            <div class="label">NIDS Anomaly Alerts</div>
+            <div class="value" id="count-nids">246</div>
+            <div class="subtext" style="color: var(--warning-amber);">Avg Latency: 0.34 ms</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: OVERVIEW & REAL-TIME ATTACK TELEMETRY -->
+      <div class="tab-pane active" id="tab-overview">
+        <div class="dashboard-grid">
+          
+          <!-- Left: Global Cyber Attack Radar Map -->
+          <div class="col-6">
+            <div class="cyber-card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="radar"></i> Global Cyber Threat Attack Radar Sweep
+                </div>
+                <span class="threat-badge safe">NVIDIA CUDA LIVE</span>
+              </div>
+              <canvas id="attack-map-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Right: Real-Time Stream Event Log Table -->
+          <div class="col-6">
+            <div class="cyber-card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-lucide="terminal"></i> Live Telemetry Threat Stream
+                </div>
+                <span class="threat-badge warning">120,000 PRED/SEC</span>
+              </div>
+              
+              <div class="stream-table-container">
+                <table class="stream-table">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Classification</th>
+                      <th>Source IP</th>
+                      <th>Target IP</th>
+                      <th>GPU Latency</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stream-tbody">
+                    <!-- Dynamic rows inserted by app.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: PHISHING & MALICIOUS URL ENGINE -->
+      <div class="tab-pane" id="tab-url">
+        <div class="cyber-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i data-lucide="search"></i> AI Phishing & Malicious URL Scanner Engine
+            </div>
+            <span class="threat-badge safe">TENSORRT INFERENCE ENGINE</span>
+          </div>
+
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem;">
+            Scans URL structure, domain lexical entropy, SSL validity, and sub-domain nesting using a deep neural network accelerated by NVIDIA TensorRT.
+          </p>
+
+          <div class="scanner-box">
+            <input type="text" id="input-url-target" class="cyber-input" value="http://secure-login-paypal.verify-accounts.xyz/update-auth/index.php" placeholder="Enter URL to inspect (e.g. http://suspicious-domain.com/login)">
+            <button class="cyber-btn" id="btn-scan-url">
+              <i data-lucide="search"></i> SCAN WITH TENSORRT AI
+            </button>
+          </div>
+
+          <!-- URL Result Container -->
+          <div id="url-result-box" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: MALWARE PAYLOAD INSPECTOR -->
+      <div class="tab-pane" id="tab-malware">
+        <div class="cyber-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i data-lucide="file-code"></i> Malware & PE Executable Byte Inspector
+            </div>
+            <span class="threat-badge critical">YARA ENGINE ACTIVE</span>
+          </div>
+
+          <div class="drop-zone" id="file-drop-zone">
+            <div class="drop-icon"><i data-lucide="upload-cloud"></i></div>
+            <h3 style="font-size: 1.1rem; color: #fff; margin-bottom: 0.4rem;">Drag & Drop Executable (.exe, .dll, .vbs) for GPU Byte Inspection</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Analyzes PE headers, byte entropy heatmaps, and suspicious Win32 API calls.</p>
+            <button class="cyber-btn cyan" id="btn-scan-malware" style="margin: 0 auto;">
+              <i data-lucide="cpu"></i> INSPECT EXECUTABLE PAYLOAD
+            </button>
+          </div>
+
+          <div id="malware-result-box" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: NETWORK INTRUSION DETECTION (NIDS) -->
+      <div class="tab-pane" id="tab-nids">
+        <div class="cyber-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i data-lucide="shield-alert"></i> Network Anomaly & Intrusion Detection System
+            </div>
+            <span class="threat-badge warning">PCAP DEEP PACKET INSPECTION</span>
+          </div>
+
+          <div class="gpu-spec-grid" style="margin-bottom: 1.5rem;">
+            <div class="gpu-stat-box">
+              <div class="title">Active Traffic Rate</div>
+              <div class="number" style="color: var(--nvidia-green);">1.42 Gbps</div>
+            </div>
+            <div class="gpu-stat-box">
+              <div class="title">Inspected Packets/Sec</div>
+              <div class="number" style="color: var(--cyber-cyan);">450,000 pps</div>
+            </div>
+            <div class="gpu-stat-box">
+              <div class="title">Isolation Forest Anomaly Score</div>
+              <div class="number" style="color: var(--threat-crimson);">88.4 / 100</div>
+            </div>
+          </div>
+
+          <h4 style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--cyber-cyan); margin-bottom: 0.8rem;">Live Packet Anomaly Inspection Feed</h4>
+          <div class="stream-table-container">
+            <table class="stream-table">
+              <thead>
+                <tr>
+                  <th>Packet ID</th>
+                  <th>Intrusion Vector</th>
+                  <th>Source IP</th>
+                  <th>Destination IP</th>
+                  <th>Anomaly Score</th>
+                  <th>Response</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>PKT-948102</td>
+                  <td><span class="threat-badge critical">DDoS SYN-Flood</span></td>
+                  <td>185.220.101.4</td>
+                  <td>192.168.1.100:80</td>
+                  <td style="color: #FF2E63; font-weight: 700;">94.8 / 100</td>
+                  <td><button class="cyber-btn crimson" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="openMitigationModal('DDoS SYN-Flood', '185.220.101.4')">BLOCK IP</button></td>
+                </tr>
+                <tr>
+                  <td>PKT-841920</td>
+                  <td><span class="threat-badge critical">DNS Tunneling Exfil</span></td>
+                  <td>194.26.29.112</td>
+                  <td>192.168.1.100:53</td>
+                  <td style="color: #FF2E63; font-weight: 700;">89.2 / 100</td>
+                  <td><button class="cyber-btn crimson" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="openMitigationModal('DNS Tunneling', '194.26.29.112')">BLOCK IP</button></td>
+                </tr>
+                <tr>
+                  <td>PKT-772183</td>
+                  <td><span class="threat-badge warning">SSH Brute-Force Recon</span></td>
+                  <td>45.142.214.8</td>
+                  <td>192.168.1.100:22</td>
+                  <td style="color: var(--warning-amber); font-weight: 700;">64.1 / 100</td>
+                  <td><button class="cyber-btn cyan" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="openMitigationModal('SSH Brute-Force', '45.142.214.8')">RATE LIMIT</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: NVIDIA GPU BENCHMARKS (TENSORRT) -->
+      <div class="tab-pane" id="tab-gpu">
+        <div class="cyber-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i data-lucide="zap"></i> NVIDIA TensorRT GPU Acceleration & Benchmark Monitor
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="cyber-btn active" id="btn-fp16" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">FP16 TensorRT</button>
+              <button class="cyber-btn cyan" id="btn-int8" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;">INT8 Quantized</button>
+            </div>
+          </div>
+
+          <div class="gpu-spec-grid">
+            <div class="gpu-stat-box">
+              <div class="title">GPU Inference Latency</div>
+              <div class="number" style="color: var(--nvidia-green);" id="gpu-lat-val">0.34 ms</div>
+            </div>
+            <div class="gpu-stat-box">
+              <div class="title">Standard CPU Latency</div>
+              <div class="number" style="color: var(--text-muted);" id="cpu-lat-val">18.42 ms</div>
+            </div>
+            <div class="gpu-stat-box">
+              <div class="title">NVIDIA Hardware Speedup</div>
+              <div class="number" style="color: var(--cyber-cyan);" id="gpu-speedup-val">54.2x</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h4 style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--nvidia-green); margin-bottom: 0.6rem;">Real-Time GPU VRAM & Tensor Core Workload Monitor</h4>
+            <canvas id="gpu-load-canvas" style="width: 100%; height: 180px; background: rgba(7,10,15,0.8); border-radius: 8px; border: 1px solid var(--border-subtle);"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: EXPLAINABLE AI (XAI) MATRIX -->
+      <div class="tab-pane" id="tab-xai">
+        <div class="cyber-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i data-lucide="brain-circuit"></i> Explainable AI (XAI) SHAP Feature Attribution Matrix
+            </div>
+            <span class="threat-badge safe">MODEL INTERPRETABILITY</span>
+          </div>
+
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            Displays global feature importance scores across 100,000+ evaluated cyber threats. Helps security analysts understand exact neural network decisions.
+          </p>
+
+          <div class="shap-container">
+            <div class="shap-item">
+              <div class="shap-header">
+                <span>Domain Lexical Entropy (&gt; 3.8)</span>
+                <span style="color: #FF2E63">+0.48 SHAP</span>
+              </div>
+              <div class="shap-bar-bg"><div class="shap-bar-fill danger" style="width: 85%;"></div></div>
+            </div>
+
+            <div class="shap-item">
+              <div class="shap-header">
+                <span>PE Win32 API Injection Imports (VirtualAllocEx)</span>
+                <span style="color: #FF2E63">+0.42 SHAP</span>
+              </div>
+              <div class="shap-bar-bg"><div class="shap-bar-fill danger" style="width: 78%;"></div></div>
+            </div>
+
+            <div class="shap-item">
+              <div class="shap-header">
+                <span>Suspicious TLD Pattern (.xyz, .top, .rf.gd)</span>
+                <span style="color: #FF2E63">+0.35 SHAP</span>
+              </div>
+              <div class="shap-bar-bg"><div class="shap-bar-fill danger" style="width: 65%;"></div></div>
+            </div>
+
+            <div class="shap-item">
+              <div class="shap-header">
+                <span>Valid SSL/TLS Certificate Authority</span>
+                <span style="color: #76B900">-0.30 SHAP (Safe Factor)</span>
+              </div>
+              <div class="shap-bar-bg"><div class="shap-bar-fill safe" style="width: 55%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Mitigation Action Modal -->
+  <div class="modal-backdrop" id="playbook-modal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeMitigationModal()"><i data-lucide="x"></i></button>
+      <div id="modal-threat-info"></div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 1.5rem;">
+        <button class="cyber-btn cyan" onclick="closeMitigationModal()">CANCEL</button>
+        <button class="cyber-btn crimson" onclick="closeMitigationModal(); downloadIncidentReport();">EXECUTE PLAYBOOK & LOG REPORT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="cursor.js"></script>
+  <script src="ai_models.js"></script>
+  <script src="gpu_benchmark.js"></script>
+  <script src="threat_map.js"></script>
+  <script src="app.js"></script>
+  
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
